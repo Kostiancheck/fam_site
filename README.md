@@ -1,5 +1,5 @@
 ## Сайт кафедри прикладної математики
-Ви можете переглянути сайт за [посіланням](http://kostiahorbach.pythonanywhere.com/contacts_page).
+Ви можете переглянути сайт за [посиланням](http://kostiahorbach.pythonanywhere.com/contacts_page).
 Доступними є наступні сторінки:
 1. [Контакти](http://kostiahorbach.pythonanywhere.com/contacts_page)
 2. [Розклад](http://kostiahorbach.pythonanywhere.com/rozklad)
