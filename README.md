@@ -9,3 +9,5 @@
 Також ви можете переглянути [api з повідомленнями](http://kostiahorbach.pythonanywhere.com/api/v1.0/messages)
 та зайти [на сторінку адміністратора](http://kostiahorbach.pythonanywhere.com/admin) використовуючи 
 логін 'admin Kostia' та пароль 'ilove(no)fam'
+
+Деякі сторінки адаптивні - видозмінюються в залежності від поведінки масштабування сторінки чи розміру екрана.
