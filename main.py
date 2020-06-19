@@ -50,7 +50,7 @@ def get_one_message(message_time):
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
-#удаление api (пока что не работает и скорее всего не будет)
+#удаление api 
 @app.route('/api/v1.0/messages/<message_time>', methods=['DELETE'])
 @auth.login_required
 def delete_message(message_time):
