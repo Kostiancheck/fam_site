@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <meta charset="utf-8">
+    <title> {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/head.css')}}">
+   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/media.css')}}" media='all and (max-width:950px)'>
+
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='pictures/favicon.png')}}"> 
+  </head>
+ 
+  <body>
+
+<header>
+    <div class='hide-mobile'>
+    <img id="gorilla" src="{{ url_for("static", filename="pictures/fam_logo.png")}}" 
+    alt="Красивый логотип с гориллой" >
+    <img id="fac-logo" src="{{ url_for("static", filename="pictures/logo.png")}}" alt="Красивый логотип"  usemap="#Navigation"> 
+    <img id="sleep" src="{{ url_for("static", filename="pictures/sleep.png")}}" alt="Красивый логотип"> 
+
+    <h1><a href="http://fpm.kpi.ua/main.do" target="_blank">Національний технічний університет України <br>"Київський політехнічний інститут імені Ігоря Сікорського"<br>Факультет прикладної математики</a>
+   
+</h1>
+    <h2>Кафедра прикладної математики</h2></div>
+   
+  </header>
+    
+
+
+  {% block nav %}
+
+  <input type="checkbox" id="dws-menu">
+    <div class="leb-menu">
+        <label for="dws-menu"><img src= "{{ url_for('static', filename='pictures/icono-menu.png')}}"><h3 class="mobile-head">Кафедра прикладної математики</h3></label>
+
+    </div>
+
+<nav>
+  <ul class="topmenu">
+    <li><a class="down">Про факультет</a>
+       <ul class="submenu">
+          <li><a href="#">Історія</a></li>
+          <li><a href="#">Викладачі</a></li>
+          <li><a href="#">Про спеціальність</a></li>
+          <li><a href="{{ url_for('international_activity') }}">Міжнародна діяльність</a></li>
+        </ul>
+    </li>
+    <li><a href="#">Новини</a></li>
+    <li><a class="down">Вступникам</a>
+        <ul class="submenu">
+          <li><a href="{{ url_for('vstup_bakalavrat') }}">На бакалаврат</a></li>
+          <li><a href="#">На магістратуру</a></li>
+          <li><a href="#">Підготовчі курси</a></li>
+        </ul></li>
+    <li><a  class="down">Студентам</a>
+        <ul class="submenu">
+          <li><a href="{{url_for('rozklad') }}">Розклад</a></li>
+          <li><a href="#">Бібліотека</a></li>
+          <li><a href="#">Стипендія</a></li>
+          <li><a href="#">Медичний моніторинг та військова підготовка</a></li>
+        </ul></li>
+    <li><a href="{{ url_for('contact') }}">Контакти</a></li>
+  </ul>
+</nav>
+
+
+
+  {% endblock %}
+
+
+{% block content %}
+
+
+  {% endblock %}
+
+
+
+
+<footer class="footer">
+       <p> © 2019 Kostia</p>
+</footer>
+  
+
+  </body>
+</html>
+ 

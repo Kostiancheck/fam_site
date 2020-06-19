@@ -1,0 +1,234 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/rozklad_style.css')}}">
+
+{% extends 'head.html' %}
+
+{% block title %}
+Розклад
+{% endblock %}
+
+
+
+{% block content %}
+<div class='content'>
+
+<select name="groups" id='select' required>
+
+   <optgroup label="КМ-9">
+   <option value="км-91">км-91</option>
+   <option value="км-92">км-92</option>
+   <option value="км-93">км-93</option>
+   <option value="км-94">км-94</option>
+   <option value="км-91мн">км-91мн</option>
+   <option value="км-91мп">км-91мп</option>
+   <option value="км-91ф">км-91ф</option>
+  </optgroup>
+
+  <optgroup label="КМ-8">
+   <option value="км-81">км-81</option>
+   <option value="км-82">км-82</option>
+   <option value="км-83">км-83</option>
+   <option value="км-84">км-84</option>
+   <option value="км-81мн">км-81мн</option>
+   <option value="км-81мп">км-81мп</option>
+   <option value="км-81ф">км-81ф</option>
+  </optgroup>
+  
+  <optgroup label="КМ-7">
+   <option value="км-71">км-71</option>
+   <option value="км-72">км-72</option>
+   <option value="км-73">км-73</option>
+  </optgroup>
+
+  </optgroup>
+   <optgroup label="КМ-6">
+   <option value="км-61">км-61</option>
+   <option value="км-62">км-62</option>
+   <option value="км-63">км-63</option>
+  </optgroup>
+
+ </select>
+ <button id='button' onclick="rozklad(document.getElementById('select'))" type="submit">Розклад занять</button>
+
+<script>
+ 
+var alles_td=document.getElementsByTagName("td");
+function ochistka(){
+    for(i=0;i<alles_td.length;i++){
+        alles_td[i].innerHTML="&nbsp";
+    }
+}
+
+ function rozklad(select){
+		var group = select.value;
+		var mainTable = document.getElementById("table");
+		mainTable.hidden=false;
+
+  		ochistka();
+	
+        fetch('https://api.rozklad.org.ua/v2/groups/'+group+'/lessons')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (api) {
+
+              	
+             for (let i = 0; i < api.data.length; i++){
+
+             	//координаты ячейки (в формате (неделя,пара,день)) в которую будет записана пара
+             	let coordinate=api.data[i].lesson_week+','+api.data[i].lesson_number+','+api.data[i].day_number;
+             	let position = document.getElementById(coordinate);
+             	
+
+             	let lessonName= document.createElement('a');
+             	let lessonFullName=api.data[i].lesson_full_name
+
+             	lessonName.setAttribute('title', lessonFullName);
+
+             	lessonName.innerHTML=api.data[i].lesson_name+'<br/>';
+             	position.appendChild(lessonName);
+
+             	
+
+             	
+				if (api.data[i].teachers.length != 0) {
+					let teacherShortName= document.createElement('a');
+					let teacherFullName=api.data[i].teachers[0].teacher_full_name
+	             	let teacherUrl=api.data[i].teachers[0].teacher_url;
+
+	             	teacherShortName.setAttribute('title', teacherFullName);
+	             	teacherShortName.setAttribute('href', teacherUrl);
+	             	teacherShortName.setAttribute('target', '_blank');
+
+	             	teacherShortName.innerHTML=api.data[i].teachers[0].teacher_short_name+'<br/>';
+	             	position.appendChild(teacherShortName);
+             	}
+             	
+             	if (api.data[i].rooms.length != 0) {
+             		let roomName=document.createElement('a');
+					let roomLatitude=api.data[i].rooms[0].room_latitude;
+	             	let roomLongitude=api.data[i].rooms[0].room_longitude;
+
+	             	var googleMapsHref='https://www.google.com/maps/search/?api=1&query='+roomLatitude+','+roomLongitude;
+
+	             	roomName.setAttribute('href', googleMapsHref);
+	             	roomName.setAttribute('target', '_blank');
+
+	             	roomName.innerHTML=api.data[i].rooms[0].room_name;
+	             	position.appendChild(roomName);
+             	}
+
+           	
+             }
+             
+              })
+            .catch(function (err) {
+                console.log('error: ' + err);
+            });
+          
+        }
+
+    </script>
+<div id='table' hidden="true">
+<h3>Перший тиждень</h3>
+    <table id="first_week" value='1' rules="all"  align="center" border="1">
+	<tr>
+		<th></th><th>Понеділок</th><th>Вівторок</th><th>Середа</th><th>Четвер</th><th>П'ятниця</th><th>Субота</th>
+	</tr><tr>
+		<th>1<br>08:30</th><td id='1,1,1'></td><td id='1,1,2'></td><td id='1,1,3'></td><td id='1,1,4'></td><td id='1,1,5'></td><td id='1,1,6'></td>
+	</tr><tr>
+		<th>2<br>10:25</th><td id='1,2,1'></td><td id='1,2,2'></td><td id='1,2,3'></td><td id='1,2,4'></td><td id='1,2,5'></td><td id='1,2,6'></td>
+	</tr><tr>
+		<th>3<br>12:20</th><td id='1,3,1'></td><td id='1,3,2'></td><td id='1,3,3'></td><td id='1,3,4'></td><td id='1,3,5'></td><td id='1,3,6'></td>
+	</tr><tr>
+		<th>4<br>14:15</th><td id='1,4,1'></td><td id='1,4,2'></td><td id='1,4,3'></td><td id='1,4,4'></td><td id='1,4,5'></td><td id='1,4,6'></td>
+	</tr><tr>
+		<th>5<br>16:10</th><td id='1,5,1'></td><td id='1,5,2'></td><td id='1,5,3'></td><td id='1,5,4'></td><td id='1,5,5'></td><td id='1,5,6'></td>
+</table>
+        <br /> <br />
+    
+        <h3>Другий тиждень</h3>
+        <table id="second_week" value='2' rules="all" align="center" border="1">
+	<tr>
+		<th></th><th>Понеділок</th><th>Вівторок</th><th>Середа</th><th>Четвер</th><th>П'ятниця</th><th>Субота</th>
+	</tr><tr>
+		<th>1<br>08:30</th><td id='2,1,1'></td><td id='2,1,2'></td><td id='2,1,3'></td><td id='2,1,4'></td><td id='2,1,5'></td><td id='2,1,6'></td>
+	</tr><tr>
+		<th>2<br>10:25</th><td id='2,2,1'></td><td id='2,2,2'></td><td id='2,2,3'></td><td id='2,2,4'></td><td id='2,2,5'></td><td id='2,2,6'></td>
+	</tr><tr>
+		<th>3<br>12:20</th><td id='2,3,1'></td><td id='2,3,2'></td><td id='2,3,3'></td><td id='2,3,4'></td><td id='2,3,5'></td><td id='2,3,6'></td>
+	</tr><tr>
+		<th>4<br>14:15</th><td id='2,4,1'></td><td id='2,4,2'></td><td id='2,4,3'></td><td id='2,4,4'></td><td id='2,4,5'></td><td id='2,4,6'></td>
+	</tr><tr>
+		<th>5<br>16:10</th><td id='2,5,1'></td><td id='2,5,2'></td><td id='2,5,3'></td><td id='2,5,4'></td><td id='2,5,5'></td><td id='2,5,6'></td>
+	</tr>
+</table>
+<!-- id тегов td состоит из "неделя, урок, день" -->
+
+</div>
+
+</div>
+{%endblock%}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div>
+<h3><span id="ctl00_MainContent_lblFirstTable">Перший тиждень</span></h3>
+        <table id="first_week" value='1' rules="all"  align="center" border="1">
+	<tr>
+		<td></td><td>Понеділок</td><td>Вівторок</td><td>Середа</td><td>Четвер</td><td>П'ятниця</td><td>Субота</td>
+	</tr><tr>
+		<td>1<br>08:30</td><td></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математичний аналіз-3. Теорія поля_(19101910)" title="Математичний аналіз-3. Теорія поля">Математичний аналіз-3</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=250c1382-d3e5-4a02-aead-7441d95bd8a0" title="старший викладач Мальчиков Володимир Вікторович">ст.вик. Мальчиков В. В.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">709-22 Лек</a></td><td></td><td></td><td></td><td></td>
+	</tr><tr>
+		<td>2<br>10:25</td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Іноземна мова 2. Іноземна мова загально-технічного спрямування_(19102880)" title="Іноземна мова 2. Іноземна мова загально-технічного спрямування">ІМ-2</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=7f0061bd-27af-4909-80d4-c8f9ea5d1055" title="старший викладач Муханова Олена Миколаївна">ст.вик. Муханова О. М.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">94-15</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Теорія ймовірності_(19101910)" title="Теорія ймовірності">Теорія ймовірності</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=6c1f874e-0cdf-470b-bdb9-6b6e72d2c547" title="доцент Вовк Лілія Борисівна">доц. Вовк Л. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4480855,30.4585595">345-19 Лек</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Обчислювальна геометрія та компьютерна графіка_(19101910)" title="Обчислювальна геометрія та компьютерна графіка">Обч. геометрія та комп. графіка</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=8f03cc14-ce23-4972-883c-5e5242f14002" title="старший викладач Сирота Сергій Вікторович">ст.вик. Сирота С. В.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">97-15</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математична логіка та теорія алгоритмів_(19101910)" title="Математична логіка та теорія алгоритмів">Мат.лог. та теорія алг.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=740c1a12-134d-40f7-9a20-ad6dba7444e3" title="старший викладач Темнікова Олена Леонідівна">ст.вик. Темнікова О. Л.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">710-22 Лек</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Програмування та підтримка веб-застосувань_(19101910)" title="Програмування та підтримка веб-застосувань">Програмування та підтр. веб.-заст.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=dd713439-ed82-4ef5-afa7-f099658cd8de" title="викладач Борисенко Павло Борисович">вик. Борисенко П. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">710-22 Лек</a></td><td></td>
+	</tr><tr>
+		<td>3<br>12:20</td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Фізика-2. Електромагнетизм_(19103220)" title="Фізика-2. Електромагнетизм">Фіз2</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=14ebe8ac-facd-4cc2-b075-52a654612ba6" title="старший викладач Климук Олена Сергіївна">ст.вик. Климук О. С.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">709-22 Лек</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математичний аналіз-3. Теорія поля_(19101910)" title="Математичний аналіз-3. Теорія поля">Математичний аналіз-3</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=250c1382-d3e5-4a02-aead-7441d95bd8a0" title="старший викладач Мальчиков Володимир Вікторович">ст.вик. Мальчиков В. В.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">624-22</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Фізичне виховання_(19103570)" title="Фізичне виховання">ФВ</a></span><br/><br/></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Обчислювальна геометрія та компьютерна графіка_(19101910)" title="Обчислювальна геометрія та компьютерна графіка">Обч. геометрія та комп. графіка</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=4a417267-c34c-4431-8b15-eb75dba23b6e" title="старший викладач Дрозденко Олександр Миколайович">ст.вик. Дрозденко О. М.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4473005,30.4565482">63-14</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Програмування та підтримка веб-застосувань_(19101910)" title="Програмування та підтримка веб-застосувань">Програмування та підтр. веб.-заст.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=dd713439-ed82-4ef5-afa7-f099658cd8de" title="викладач Борисенко Павло Борисович">вик. Борисенко П. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4473005,30.4565482">64-14 Лаб</a></td><td></td>
+	</tr><tr>
+		<td>4<br>14:15</td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Фізика-2. Електромагнетизм_(19103220)" title="Фізика-2. Електромагнетизм">Фіз2</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=14ebe8ac-facd-4cc2-b075-52a654612ba6" title="старший викладач Климук Олена Сергіївна">ст.вик. Климук О. С.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.448603,30.457019">336-07</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Теорія ймовірності_(19101910)" title="Теорія ймовірності">Теорія ймовірності</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=6c1f874e-0cdf-470b-bdb9-6b6e72d2c547" title="доцент Вовк Лілія Борисівна">доц. Вовк Л. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">95-15</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математична логіка та теорія алгоритмів_(19101910)" title="Математична логіка та теорія алгоритмів">Мат.лог. та теорія алг.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=740c1a12-134d-40f7-9a20-ad6dba7444e3" title="старший викладач Темнікова Олена Леонідівна">ст.вик. Темнікова О. Л.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">92-15</a></td><td></td><td></td><td></td>
+	</tr><tr>
+		<td>5<br>16:10</td><td></td><td></td><td></td><td></td><td></td><td></td>
+	</tr>
+</table>
+        <br />
+    </div>
+    <div>
+        <h3><span id="ctl00_MainContent_lblSecondTable">Другий тиждень</span></h3>
+        <table id="second_week" value='2' rules="all" align="center" border="1">
+	<tr>
+		<td></td><td>Понеділок</td><td>Вівторок</td><td>Середа</td><td>Четвер</td><td>П'ятниця</td><td>Субота</td>
+	</tr><tr>
+		<td>1<br>08:30</td><td class="day_backlight"></td><td class="closest_pair"><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математичний аналіз-3. Теорія поля_(19101910)" title="Математичний аналіз-3. Теорія поля">Математичний аналіз-3</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=250c1382-d3e5-4a02-aead-7441d95bd8a0" title="старший викладач Мальчиков Володимир Вікторович">ст.вик. Мальчиков В. В.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">709-22 Лек</a></td><td></td><td></td><td></td><td></td>
+	</tr><tr>
+		<td>2<br>10:25</td><td class="day_backlight"><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Іноземна мова 2. Іноземна мова загально-технічного спрямування_(19102880)" title="Іноземна мова 2. Іноземна мова загально-технічного спрямування">ІМ-2</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=7f0061bd-27af-4909-80d4-c8f9ea5d1055" title="старший викладач Муханова Олена Миколаївна">ст.вик. Муханова О. М.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">94-15</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Теорія ймовірності_(19101910)" title="Теорія ймовірності">Теорія ймовірності</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=6c1f874e-0cdf-470b-bdb9-6b6e72d2c547" title="доцент Вовк Лілія Борисівна">доц. Вовк Л. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4480855,30.4585595">339-19 Лек</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Обчислювальна геометрія та компьютерна графіка_(19101910)" title="Обчислювальна геометрія та компьютерна графіка">Обч. геометрія та комп. графіка</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=8f03cc14-ce23-4972-883c-5e5242f14002" title="старший викладач Сирота Сергій Вікторович">ст.вик. Сирота С. В.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">97-15</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математична логіка та теорія алгоритмів_(19101910)" title="Математична логіка та теорія алгоритмів">Мат.лог. та теорія алг.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=740c1a12-134d-40f7-9a20-ad6dba7444e3" title="старший викладач Темнікова Олена Леонідівна">ст.вик. Темнікова О. Л.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">710-22 Лек</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Програмування та підтримка веб-застосувань_(19101910)" title="Програмування та підтримка веб-застосувань">Програмування та підтр. веб.-заст.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=dd713439-ed82-4ef5-afa7-f099658cd8de" title="викладач Борисенко Павло Борисович">вик. Борисенко П. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">710-22 Лек</a></td><td></td>
+	</tr><tr>
+		<td>3<br>12:20</td><td class="day_backlight"><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Фізика-2. Електромагнетизм_(19103220)" title="Фізика-2. Електромагнетизм">Фіз2</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=14ebe8ac-facd-4cc2-b075-52a654612ba6" title="старший викладач Климук Олена Сергіївна">ст.вик. Климук О. С.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">709-22 Лек</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математичний аналіз-3. Теорія поля_(19101910)" title="Математичний аналіз-3. Теорія поля">Математичний аналіз-3</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=250c1382-d3e5-4a02-aead-7441d95bd8a0" title="старший викладач Мальчиков Володимир Вікторович">ст.вик. Мальчиков В. В.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">624-22</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Фізичне виховання_(19103570)" title="Фізичне виховання">ФВ</a></span><br/><br/></td><td></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Програмування та підтримка веб-застосувань_(19101910)" title="Програмування та підтримка веб-застосувань">Програмування та підтр. веб.-заст.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=dd713439-ed82-4ef5-afa7-f099658cd8de" title="викладач Борисенко Павло Борисович">вик. Борисенко П. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4473005,30.4565482">64-14 Лаб</a></td><td></td>
+	</tr><tr>
+		<td>4<br>14:15</td><td class="day_backlight"><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Фізика-2. Електромагнетизм_(19103220)" title="Фізика-2. Електромагнетизм">Фіз2</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=14ebe8ac-facd-4cc2-b075-52a654612ba6" title="старший викладач Климук Олена Сергіївна">ст.вик. Климук О. С.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.4459415,30.4547315">624-22</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Теорія ймовірності_(19101910)" title="Теорія ймовірності">Теорія ймовірності</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=6c1f874e-0cdf-470b-bdb9-6b6e72d2c547" title="доцент Вовк Лілія Борисівна">доц. Вовк Л. Б.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">95-15</a></td><td><span class="disLabel"><a class="plainLink" href="http://wiki.kpi.ua/index.php/Математична логіка та теорія алгоритмів_(19101910)" title="Математична логіка та теорія алгоритмів">Мат.лог. та теорія алг.</a></span><br/><a class="plainLink" href="/Schedules/ViewSchedule.aspx?v=740c1a12-134d-40f7-9a20-ad6dba7444e3" title="старший викладач Темнікова Олена Леонідівна">ст.вик. Темнікова О. Л.</a><br/><a class="plainLink" href="http://maps.google.com?q=50.447720, 30.456686">92-15</a></td><td></td><td></td><td></td>
+	</tr><tr>
+		<td>5<br>16:10</td><td class="day_backlight"></td><td></td><td></td><td></td><td></td><td></td>
+	</tr>
+	 
+</table>
+</div> -->

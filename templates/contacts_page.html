@@ -1,0 +1,84 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/contacts_page_style.css')}}">
+
+
+{% extends 'head.html' %}
+
+
+{% block title %}
+Контакти
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+
+   
+  <iframe class="googlemap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1930.4783567762236!2d30.455172308892294!3d50.44715833107607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce9d7d148645%3A0x3ab3c06775e3c757!2z0KTQsNC60YPQu9GM0YLQtdGCINC_0YDQuNC60LvQsNC00L3QvtC5INC80LDRgtC10LzQsNGC0LjQutC4INCa0J_QmCDQuNC8LiDQmNCz0L7RgNGPINCh0LjQutC-0YDRgdC60L7Qs9C-!5e1!3m2!1sru!2sua!4v1570654698289!5m2!1sru!2sua"  frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+
+<div class="contacts">
+    <h1>Контакти</h1>
+Кафедра прикладної математики
+КПІ ім. Ігоря Сікорського<br>
+вул. Політехнічна, 14<br>
+Київ 03056<br>
+Україна<br><br>
+
+Кабінети 77 (завідувач кафедри), 60, 69 <br>(заступники завідувача кафедри), 65, 66, 74, 75 (викладацькі)<br>
+Email: <a href="mailto: pmakpi@gmail.com">pmakpi@gmail.com</a><br><br>
+Ми в telegram:<br>
+<a href="https://t.me/dekanat_fpm" target="_blank">t.me/dekanat_fpm</a>
+</div>
+
+
+<div class="students">
+<h2>Cтудентське самоврядування:</h2>
+Telegram канал: <a href="https://t.me/primat_kpi" target="_blank">@primat_kpi</a><br>
+Чат студентів: <a href="https://t.me/primat_chat" target="_blank">@primat_chat</a><br>
+Чат чат абітурієнтів: <a href="https://t.me/fam_abit" target="_blank">@fam_abit</a><br>
+
+Instagram: <a href="https://www.instagram.com/primat_kpi/" target="_blank">@primat_kpi/</a>
+</div>
+
+
+<h2 class="feedback_h">Форма зворотньго зв'язку</h2>
+
+<!--
+<form action="" class="feedback" method="post" name="test" id="form">
+<input type="text" name="name"  placeholder="Ім'я">
+<input type="email" name="email"  placeholder="Пошта">
+<textarea name="message" cols="40" rows="6" placeholder="Текст повідомлення" required ></textarea>
+<input type="button" onclick="valid(document.getElementById('form'))" name="submit" value="Надіслати">
+</form>-->
+
+
+<form action="" method="post" name="test"  class="feedback">
+
+    {{ form.csrf_token() }}
+
+    {% for field in form if field.name != "csrf_token" %}
+    {% for error in field.errors %}
+    <span style="color: red;">Поле порожнє або заповнене неправильно ☹</span>
+      {% endfor %}
+  <p>{{ field  }}</p>
+    {% endfor %}
+</form>
+
+<!-- <div id='alert'>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
+
+</div> -->
+
+
+
+</div>
+
+{% endblock %}
+ 
+

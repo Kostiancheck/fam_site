@@ -1,0 +1,197 @@
+* {
+    margin: 0;
+    padding: 0;
+   }
+
+
+
+body{background-color:#dadada; height: auto; display: flex;
+                flex-direction: column;}
+
+header{background-color: #000000;
+}
+header h1{font-size:120%;
+color: #FFFFFF;
+text-align: center;
+font-weight : lighter;
+}
+header h1 a{color: #FFFFFF;
+  text-decoration: none;}
+header h2{
+text-align:center;
+display: flex;
+justify-content: center;
+font-size:220%;
+color: #FFFFFF;
+font-style: italic;
+margin:0 20%;
+padding: 3% 0% ;
+}
+#gorilla{
+  padding:1% 0% 1% 1%;
+  margin-right:10%;
+  float:right;
+  height:150px;
+  opacity: 0.7;
+  z-index: 1;
+}
+
+#sleep{
+  position:absolute;
+  display:block;
+  right:8%;
+  z-index: 2;
+  height: 60px;
+}
+
+#fac-logo{
+  padding:0.5% 1% 1% 10%;
+  float:left;
+  height:150px;
+  }
+
+#gorilla:hover ~#sleep{display:none;}
+#sleep{animation:sleep_animation 8s ease-in-out infinite}
+
+#gorilla:hover {
+  animation: gorilla_animation alternate 1s  1 ease-in-out;
+  opacity: 1;
+}
+
+
+@media all and (min-width: 950px) {
+/*меню*/
+nav {
+  display: flex;
+  justify-content:center;
+  font-size:115%;
+  text-align: center;
+  background: #444444ef;
+  position: sticky;
+  top:0;
+}}
+
+nav a {
+  display:block;
+  padding: 8px 50px;
+  color: #FFFFFF;
+  text-decoration: none;
+}
+
+nav a:hover {
+  background: #3268b8;
+}
+
+.topmenu{
+   margin: 0;
+    padding: 0;
+position: sticky;
+display:flex;
+justify-content:center;
+}
+
+.topmenu li { 
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+#down::after {
+  content: " ▼"; 
+   font-size: 50%;
+   display: inline;
+   position: relative; 
+}
+
+
+.submenu {
+  display: none;
+  background:#6d6d6d;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  }
+
+.submenu{z-index: 1;}
+
+.submenu li{width: 100%; 
+ border-bottom:2px solid #3268b8;
+ }
+
+.topmenu li:hover .submenu { display: block;}
+
+/*медиа-меню*/
+.leb-menu label:hover{
+ cursor: pointer;
+background: #3268b8;
+}
+#dws-menu,
+.leb-menu label {
+ display: none;
+}
+
+
+
+
+
+
+.content {
+                flex-grow: 1;
+            }
+
+.content{
+margin:0 10%;
+padding: 30px;
+background: #FFFFFF; 
+box-shadow: 0 0 10px #444444;
+
+text-align: justify;
+}
+
+footer { 
+  width: 100%;
+  height: 40px;
+  background: #444444;
+}
+.footer p{
+  color:#dadada;
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  align-content: center;
+  animation:text_animation 5s infinite;
+  
+}
+
+
+/*animation*/
+@keyframes  gorilla_animation {
+   15% {
+    transform: translateX(10px);
+  }
+  30% {
+   transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  50% {
+    transform: translateX(-7px);
+  }
+  65% {
+    transform: translateX(4px);
+  }
+  80% {
+    transform: translateX(-2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+  } 
+
+@keyframes  sleep_animation{
+25%{transform: translateY(5px);}
+50%{transform: translateY(-3px)}
+75%{transform: translateY(2px);}
+100%{transform: translateY(0);}
+}

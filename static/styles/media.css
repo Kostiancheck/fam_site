@@ -1,0 +1,69 @@
+
+@media all and (max-width: 950px) {
+
+
+
+.leb-menu{
+  background: #444444ef;
+}
+ .leb-menu label {
+  display: block;
+  width: 30px;
+  height: 30px;
+  padding: 10px;
+  border-right: 1px solid #fff;
+ }
+ .topmenu {
+  padding: 0;
+ }
+ nav {
+ position: absolute;
+ width: 200px;
+    margin-left: -200px;
+    transition: all 0.5s;
+    display: flex;
+    justify-content: center;
+    font-size: 115%;
+    text-align: center;
+    background: #444444ef;
+    top: 50px;
+ }
+ .topmenu {
+  flex-direction: column;
+ }
+ #dws-menu:checked ~ nav {
+  margin: 0;
+ }
+ nav li {
+  border-top: 1px solid #fff;
+ }
+ nav li a {
+  font-size: 14px;
+  padding: 15px 10px;
+ }
+ div.banner {
+  height: 200px;
+ }
+.mobile-head {
+ 	position: absolute;
+ 	right: 4px;
+ 	color: white;
+    font-size: 100%;
+    position: absolute;
+    top: 15;
+    display:flex;
+	justify-content:center;
+ }
+
+
+div.mobile {
+  width: auto;
+  float: none;
+  margin-right: 0;
+ }
+ .hide-mobile {
+  display: none;
+ }
+}
+
+

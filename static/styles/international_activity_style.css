@@ -1,0 +1,42 @@
+  * {
+    margin: 0;
+    padding: 0;
+   }
+
+/*content*/
+
+.content {
+                flex-grow: 1;
+            }
+
+#contents a{
+  text-decoration: none;
+  color:#3e5a85;
+}
+
+#contents-h {
+text-align:center;
+color:rgb(176, 186, 197);
+}
+
+.content p{
+  margin:2%;
+  line-height:135%;
+}
+.content h1{
+  font-family: "Сomic Sans MS" Cursive;
+  text-align:center;
+  font-style: italic;
+}
+
+.content h2, .content h1{
+  padding:10px;
+  margin:0% 4%;
+}
+.content ul, .content ol{
+  background-color:#E9EFF6;
+border-radius: 20px;
+padding:20px;
+margin:2%;
+line-height:135%;
+}

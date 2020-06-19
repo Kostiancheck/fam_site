@@ -1,0 +1,83 @@
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/admin.css')}}">
+
+{% extends 'head.html' %}
+
+{% block title %}
+Адміністратор
+{% endblock %}
+
+{% block content %}
+
+<div class='content'>
+
+ <div id="list_of_messages"></div>
+    <script>
+        
+   
+//document.getElementById('show_more').addEventListener('click', appendData);
+        var count=0;  
+        var ol = document.createElement('ol');   
+        function appendData() {
+            fetch('http://127.0.0.1:5000/api/v1.0/messages')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+            var mainContainer = document.getElementById("list_of_messages");
+           
+            for (var i = count; i < data.length && i<5+count; i++) {
+                var li = document.createElement('li');
+                var ul = document.createElement('ul');
+                var liTime=document.createElement('li');
+                var liName=document.createElement('li');
+                var liMessage=document.createElement('li');
+                var liEmail=document.createElement('li');
+
+                liTime.innerHTML = 'Time: '.bold()+data[i].Time;
+                liName.innerHTML = 'Name: '.bold()+data[i].Name;
+                liMessage.innerHTML = 'Message: '.bold()+data[i].Message;
+                liEmail.innerHTML = 'Email: '.bold()+"<a href='mailto:"+data[i].Email+"'>" +  data[i].Email;
+
+
+                ul.appendChild(liTime);   
+                ul.appendChild(liName); 
+                ul.appendChild(liMessage); 
+                ul.appendChild(liEmail); 
+                li.appendChild(ul)   
+                ol.appendChild(li);          
+            }
+           
+            mainContainer.appendChild(ol);
+            count+=5;
+            if (count>=data.length){
+                document.getElementById('show_more').hidden = true;
+                document.getElementById("nomessages").innerHTML='Більше повідомлень немає';
+            }
+
+             })
+            .catch(function (err) {
+                console.log('error: ' + err);
+            });
+           
+        }
+        appendData();
+        
+
+    </script>
+
+<button id="show_more" onclick="appendData()">Показати ще</button>
+<div id="nomessages"></div>
+ <!--  <div class='content'>
+    <div class='messages'>
+
+    <ol>
+    {% for file_name in files%}
+    <li>{% include 'messages/'+file_name%}</li><br><br>
+    {% endfor %}
+    </ol>
+
+    </div>
+</div>  -->
+</div>
+
+{%endblock%}

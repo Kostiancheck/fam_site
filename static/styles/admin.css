@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+   }
+
+/*content*/
+
+.content #list_of_messages, .content #show_more{
+	margin-left: 5%;
+}
+#nomessages{
+	margin-left: 5%;
+	padding-top: 5px;
+	color:red;
+	font-weight: bold;
+}
+
+
+
